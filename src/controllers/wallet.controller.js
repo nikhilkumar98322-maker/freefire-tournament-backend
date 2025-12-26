@@ -5,12 +5,13 @@ exports.getWallet = async (req, res) => {
     const { userId } = req.params;
 
     const wallet = await Wallet.findOne({ userId });
+
     if (!wallet) {
-      return res.status(404).json({ message: "Wallet not found" });
+      return res.json({ balance: 0 });
     }
 
-    res.json(wallet);
+    res.json({ balance: wallet.balance });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Wallet error" });
   }
 };

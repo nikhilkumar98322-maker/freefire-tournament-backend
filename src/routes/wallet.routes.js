@@ -3,6 +3,6 @@ const router = express.Router();
 const { getWallet } = require("../controllers/wallet.controller");
 
 // User wallet
-router.get("/:userId", getWallet);
+router.get("/wallet/:userId", getWallet);
 
 module.exports = router;
