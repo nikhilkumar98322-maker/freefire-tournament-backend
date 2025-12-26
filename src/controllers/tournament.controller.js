@@ -1,7 +1,6 @@
 const Tournament = require("../models/Tournament");
-const Join = require("../models/Join");
-const Wallet = require("../models/Wallet");
 
+// CREATE
 exports.createTournament = async (req, res) => {
   try {
     const tournament = await Tournament.create(req.body);
@@ -11,33 +10,16 @@ exports.createTournament = async (req, res) => {
   }
 };
 
+// JOIN (dummy for now)
 exports.joinTournament = async (req, res) => {
+  res.json({ message: "Joined (test)" });
+};
+
+// GET ALL
+exports.getAllTournaments = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { tournamentId } = req.body;
-
-    // Prevent double join
-    const alreadyJoined = await Join.findOne({ userId, tournamentId });
-    if (alreadyJoined) {
-      return res.status(400).json({ message: "Already joined tournament" });
-    }
-
-    const tournament = await Tournament.findById(tournamentId);
-    if (!tournament) {
-      return res.status(404).json({ message: "Tournament not found" });
-    }
-
-    const wallet = await Wallet.findOne({ userId });
-    if (!wallet || wallet.deposit < tournament.entryFee) {
-      return res.status(400).json({ message: "Insufficient balance" });
-    }
-
-    wallet.deposit -= tournament.entryFee;
-    await wallet.save();
-
-    await Join.create({ userId, tournamentId });
-
-    res.json({ message: "Tournament joined successfully" });
+    const tournaments = await Tournament.find().sort({ createdAt: -1 });
+    res.json(tournaments);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

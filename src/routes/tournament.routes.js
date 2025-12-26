@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../middlewares/auth.middleware");
-const admin = require("../middlewares/admin.middleware");
+
 const {
   createTournament,
-  joinTournament
+  joinTournament,
+  getAllTournaments
 } = require("../controllers/tournament.controller");
 
-// Admin
-router.post("/create", auth, admin, createTournament);
+// CREATE TOURNAMENT (admin)
+router.post("/create", createTournament);
 
-// User
-router.post("/join", auth, joinTournament);
+// GET ALL TOURNAMENTS (admin panel)
+router.get("/all", getAllTournaments);
+
+// JOIN TOURNAMENT (user)
+router.post("/join", joinTournament);
 
 module.exports = router;
