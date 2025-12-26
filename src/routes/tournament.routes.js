@@ -9,7 +9,7 @@ const {
 
 // CREATE TOURNAMENT (admin)
 router.post("/create", createTournament);
-
+router.get("/", getAllTournaments);
 // GET ALL TOURNAMENTS (admin panel)
 router.get("/all", getAllTournaments);
 
